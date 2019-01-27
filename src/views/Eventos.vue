@@ -1,6 +1,16 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Tabela titulo="Lista de eventos"></Tabela>
   </div>
 </template>
+
+<script>
+
+import Tabela from '@/components/Tabela.vue'
+
+export default {
+  components: {
+    Tabela
+  } 
+}
+</script>

@@ -1,13 +1,17 @@
 <template>
   <div id="app" class="container-fluid">
-    
+    <div class="row justify-content-md-center">
+      <div class="col-md-10">
+
     <nav class="nav">
-      <router-link to="/" class="nav-link"> Eventos </router-link>
-      <router-link to="/about" class="nav-link"> Ingressos </router-link>
-      <router-link to="/about" class="nav-link"> Tipos de ingressos </router-link>
+      <router-link to="/eventos" class="nav-link"> Eventos </router-link>
+      <router-link to="/ingressos" class="nav-link"> Ingressos </router-link>
+      <router-link to="/tipos-ingressos" class="nav-link"> Tipos de ingressos </router-link>
     </nav>
 
     <router-view/>
+    </div>
+      </div>
 
   </div>
 </template>

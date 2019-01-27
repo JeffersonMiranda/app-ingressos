@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Eventos from '@/views/Eventos.vue'
+import Ingressos from '@/views/Ingressos.vue'
+import TiposIngressos from '@/views/TiposIngressos.vue'
 
 Vue.use(Router)
 
@@ -9,11 +12,23 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home'
+      name: 'home',
+      component: Eventos
     },
     {
-      path: '/about',
-      name: 'about'
+      path: '/eventos',
+      name: 'eventos',
+      component: Eventos
+    },
+    {
+      path: '/ingressos',
+      name: 'ingressos',
+      component: Ingressos
+    },
+    {
+      path: '/tipos-ingressos',
+      name: 'tiposIngressos',
+      component: TiposIngressos
     }
   ]
 })
