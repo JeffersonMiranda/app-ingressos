@@ -3,15 +3,14 @@
     <div class="row justify-content-md-center">
       <div class="col-md-10">
 
-    <nav class="nav">
-      <router-link to="/eventos" class="nav-link"> Eventos </router-link>
-      <router-link to="/ingressos" class="nav-link"> Ingressos </router-link>
-      <router-link to="/tipos-ingressos" class="nav-link"> Tipos de ingressos </router-link>
-    </nav>
+        <nav class="nav">
+          <router-link to="/eventos" class="nav-link"> Eventos </router-link>
+          <router-link to="/ingressos" class="nav-link"> Ingressos </router-link>
+        </nav>
 
-    <router-view/>
-    </div>
+        <router-view/>
       </div>
+    </div>
 
   </div>
 </template>

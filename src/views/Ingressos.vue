@@ -1,13 +1,13 @@
 <template>
   <div class="home">
 
-		 <div class="row">  
+		<div class="row">  
 			<div class="col-md-3">
         <div class="form-group">
           <label for="descricaoForm"> Evento </label>
-          <select class="form-control" v-model="ingressoForm.evento">
-            <option v-for="evento in listaEventos" :value="evento.id">
-              {{ evento.descricao }}
+          <select v-if="listaEventos" class="form-control" v-model="ingressoForm.evento">
+            <option v-for="evento in listaEventos" :value="evento" >
+              {{ evento.nome }}
             </option>
           </select>
         </div>
@@ -15,7 +15,7 @@
       <div class="col-md-3">
         <div class="form-group">
           <label for="descricaoForm"> Lote </label>
-          <input type="text" class="form-control" id="descricaoForm" v-model="ingressoForm.descricao">
+          <input type="text" class="form-control" id="descricaoForm" v-model="ingressoForm.lote">
         </div>
       </div>
       <div class="col-md-3">
@@ -53,21 +53,21 @@
       <thead>
 			  <tr>
 					<th> ID </th>
-					<th> Evento </th>
-					<th> Descrição </th>
+					<th> Nomde Evento </th>
 					<th> Lote </th>
 					<th> Valor </th>
+					<th> Modalidade </th>
 					<th> Região </th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="ingresso in listaIngressos">
+				<tr v-if="listaIngressos" v-for="ingresso in listaIngressos">
 					<td> {{ ingresso.id }} </td>
-					<td> {{ ingresso.evento.descricao }} </td>
-					<td> {{ ingresso.descricao }} </td>
-					<td> {{ ingresso.lote.id }} </td>
-					<td> {{ ingresso.valor.id }} </td>
-					<td> {{ ingresso.regiao.id }} </td>
+					<td> {{ ingresso.evento.nome }} </td>
+					<td> {{ ingresso.lote }} </td>
+					<td> {{ ingresso.valor }} </td>
+					<td> {{ ingresso.modalidade }} </td>
+					<td> {{ ingresso.regiao }} </td>
 				</tr>
 			</tbody>
     </Tabela>
@@ -82,11 +82,11 @@ export default {
   components: {
     Tabela
 	},
+	props: ['id_evento'],
 	 data(){
     return {
       ingressoForm: {
 				evento: "",
-				descricao: "",
         lote: "",
 				valor: "",
 				regiao: "",
@@ -105,8 +105,7 @@ export default {
       fetch('http://localhost:1337/ingressos', {
         method: 'post',
         body: JSON.stringify({
-					evento: vm.ingressoForm.evento,
-          descricao: vm.ingressoForm.descricao,
+					evento: vm.ingressoForm.evento.id,
 					lote: vm.ingressoForm.lote,
 					modalidade: vm.ingressoForm.modalidade,
 					valor: vm.ingressoForm.valor,
@@ -123,6 +122,11 @@ export default {
 			return fetch('http://localhost:1337/eventos/', {
 				method: 'get'
 			}).then(response => response.json())
+		},
+		SelectedEvento() {
+			if (this.id_evento) {
+			 this.ingressoForm.evento = this.listaEventos.find(evento => evento.id == this.id_evento)
+			}
 		}
 	},
 	mounted() {
@@ -133,7 +137,8 @@ export default {
 		})
 
 		this.getAllEventos().then(data => {
-			vm.listaEventos = data;
+			vm.listaEventos = data
+			vm.SelectedEvento()
 		})
 	}
 }
