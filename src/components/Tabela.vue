@@ -1,15 +1,23 @@
 <template>
-	<div>
-		<h2> {{ titulo }} </h2>
-
-		<table class="table"> <slot></slot> </table>
-		
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table-responsive">
+				<table class="table responsive"> <slot></slot> </table>		
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'Tabela',
-	props: ['titulo']
+	name: 'Tabela'
 }
 </script>
+
+<style lang="scss">
+	
+	.table {
+		margin-top: 20px;
+	}
+
+</style>

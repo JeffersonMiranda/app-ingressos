@@ -3,7 +3,7 @@
     <div class="row justify-content-md-center">
       <div class="col-md-10">
 
-        <nav class="nav">
+        <nav class="nav menu">
           <router-link to="/eventos" class="nav-link"> Eventos </router-link>
           <router-link to="/ingressos" class="nav-link"> Ingressos </router-link>
         </nav>
@@ -23,5 +23,9 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+
+  .menu {
+    margin-bottom: 20px;
+  }
 }
 </style>

@@ -44,16 +44,18 @@
           </select>
         </div>
       </div>
-      <div class="col-md-3"> 
+      <div class="col-md-3 align-self-center"> 
         <button type="submit" class="btn btn-primary" @click="save()"> Cadastrar </button>  
       </div>
     </div>
 
-    <Tabela titulo="Ingressos">
+		<input type="text" class="form-control formPesquisa" placeholder="Pesquisar por nome do evento" v-model="pesquisaForm">
+
+    <Tabela>
       <thead>
 			  <tr>
 					<th> ID </th>
-					<th> Nomde Evento </th>
+					<th> Nome do evento </th>
 					<th> Lote </th>
 					<th> Valor </th>
 					<th> Modalidade </th>
@@ -61,7 +63,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-if="listaIngressos" v-for="ingresso in listaIngressos">
+				<tr v-if="listaIngressos" v-for="ingresso in filtroPesquisa">
 					<td> {{ ingresso.id }} </td>
 					<td> {{ ingresso.evento.nome }} </td>
 					<td> {{ ingresso.lote }} </td>
@@ -95,23 +97,34 @@ export default {
 			regioes: ['Plateia', 'Balcão'],
 			modalidades: ['Inteira', 'Meia'],
 			listaIngressos: [],
-			listaEventos: []
+			listaEventos: [],
+			pesquisaForm: ""
     }
 	},
 	methods: {
 		save() {
-      var vm = this;
+			var vm = this;
+			
+			if(this.validateForm()) {
 
-      fetch('http://localhost:1337/ingressos', {
-        method: 'post',
-        body: JSON.stringify({
-					evento: vm.ingressoForm.evento.id,
-					lote: vm.ingressoForm.lote,
-					modalidade: vm.ingressoForm.modalidade,
-					valor: vm.ingressoForm.valor,
-					regiao: vm.ingressoForm.regiao
-        })
-      })
+				fetch('http://localhost:1337/ingressos', {
+					method: 'post',
+					body: JSON.stringify({
+						evento: vm.ingressoForm.evento.id,
+						lote: vm.ingressoForm.lote,
+						modalidade: vm.ingressoForm.modalidade,
+						valor: vm.ingressoForm.valor,
+						regiao: vm.ingressoForm.regiao
+					})
+				}).then(response => {
+					alert('Ingresso cadastrado com sucesso !')
+					vm.populateTable()
+				}).catch(()=>{
+					alert('Alguma falha ocorreu! Tente outra vez.')
+				})
+			} else {
+				alert('Preencha todos os campos corretamente.')
+			}
     },
 		getAll() {
 			return fetch('http://localhost:1337/ingressos/', {
@@ -123,23 +136,49 @@ export default {
 				method: 'get'
 			}).then(response => response.json())
 		},
-		SelectedEvento() {
+		selectedEvento() {
 			if (this.id_evento) {
 			 this.ingressoForm.evento = this.listaEventos.find(evento => evento.id == this.id_evento)
+			 this.listaIngressos = this.listaIngressos.filter(ingresso => ingresso.evento.id == this.id_evento)
+			}
+		},
+		populateTable() {
+			var vm = this
+
+			this.getAll().then(data => {
+				vm.listaIngressos = data.reverse()
+			})
+		},
+    validateForm() {
+      return Object.values(this.ingressoForm).every(dado => dado != null && dado != '' )
+    }
+	},
+	computed: {
+		filtroPesquisa() {
+			if(this.pesquisaForm.length > 3) {
+				return this.listaIngressos.filter(ingresso => ingresso.evento.nome.includes(this.pesquisaForm) )
+			} else {
+				return this.listaIngressos;
 			}
 		}
 	},
 	mounted() {
 		var vm = this
-
-		this.getAll().then(data => {
-			vm.listaIngressos = data
-		})
+		
+		this.populateTable()
 
 		this.getAllEventos().then(data => {
 			vm.listaEventos = data
-			vm.SelectedEvento()
+			vm.selectedEvento()
 		})
 	}
 }
 </script>
+
+<style lang="scss">
+
+	.formPesquisa {
+		margin: 20px 0;
+	}
+
+</style>

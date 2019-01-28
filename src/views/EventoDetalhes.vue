@@ -50,30 +50,23 @@
     <Tabela>
       <thead>
 			  <tr>
-					<th>ID</th>
-					<th>Nome</th>
-					<th>Descrição</th>
-					<th>Data</th>
-					<th>Abertura</th>
-          <th>Início</th>
-          <th>Classificação</th>
+					<th> ID </th>
+					<th> Lote </th>
+					<th> Valor </th>
+					<th> Modalidade </th>
+					<th> Região </th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="evento in listaEventos">
-					<td> {{ evento.id }} </td>
-          <td> {{ evento.nome }} </td>
-          <td> {{ evento.descricao }} </td>
-          <td> {{ evento.data }} </td>
-          <td> {{ evento.abertura }} </td>
-          <td> {{ evento.inicio }} </td>
-          <td> {{ evento.classificacao }} </td>
-          <td> <router-link :to="{name: 'ingressos_com_evento', params: { id_evento: evento.id } }"> Adicionar ingressos </router-link> </td>
-          <td> <router-link :to="{name: 'evento_detalhes', params: { id_evento: evento.id } }"> Vizualizar ingressos </router-link></td>
-        </tr>
+				<tr v-if="listaIngressos" v-for="ingresso in listaIngressos">
+					<td> {{ ingresso.id }} </td>
+					<td> {{ ingresso.lote }} </td>
+					<td> {{ ingresso.valor }} </td>
+					<td> {{ ingresso.modalidade }} </td>
+					<td> {{ ingresso.regiao }} </td>
+				</tr>
 			</tbody>
     </Tabela>
-
   </div>
 </template>
 
@@ -84,10 +77,11 @@ import Tabela from '@/components/Tabela.vue'
 export default {
   components: {
     Tabela
-  },
+	},
+	props: ['id_evento'],
    data(){
     return {
-      eventoForm: {
+			eventoForm: {
 				nome: "",
 				descricao: "",
         data: "",
@@ -96,52 +90,24 @@ export default {
 				classificacao: ""
 			},
       classificacoes: ['Livre', 10, 12, 14, 16, 18],
-      listaEventos: []
+      listaIngressos: []
     }
   },
   methods: {
-    save() {
-      var vm = this;
-
-      if(this.validateForm()) {
-        fetch('http://localhost:1337/eventos', {
-          method: 'post',
-          body: JSON.stringify({
-            nome: vm.eventoForm.nome,
-            descricao: vm.eventoForm.descricao,
-            data: vm.eventoForm.data,
-            abertura: vm.eventoForm.abertura,
-            inicio: vm.eventoForm.inicio,
-            classificacao: vm.eventoForm.classificacao
-          })
-        }).then(response => {
-          alert('Evento cadastrado com sucesso !')
-          vm.populateTable()
-        }).catch(()=>{
-          alert('Alguma falha ocorreu! Tente outra vez.')
-        })
-      } else {
-        alert('Preencha todos os campos corretamente.')
-      }
-    },
-    populateTable() {
-      var vm = this
-
-      this.getAll().then(data => {
-        vm.listaEventos = data.reverse()
-      })
-    },
-    getAll() {
-			return fetch('http://localhost:1337/eventos/', {
+		getEvento() {
+			var url = `http://localhost:1337/eventos-with-ingressos/${this.id_evento}`
+			return fetch(url, {
 				method: 'get'
 			}).then(response => response.json())
-    },
-    validateForm() {
-      return Object.values(this.eventoForm).every(dado => dado != null && dado != '' )
-    }
+		},
   },
-  mounted() {  
-    this.populateTable()  
+  mounted() {
+    var vm = this
+
+    this.getEvento().then(data => {
+			Object.assign(vm.eventoForm, data)
+      vm.listaIngressos = data.ingressos.reverse()
+    })
   }
 }
 </script>
