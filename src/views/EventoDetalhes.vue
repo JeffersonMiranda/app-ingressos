@@ -95,7 +95,7 @@ export default {
   },
   methods: {
 		getEvento() {
-			var url = `http://localhost:1337/eventos-with-ingressos/${this.id_evento}`
+			var url = `${this.$apiUrl}/eventos-with-ingressos/${this.id_evento}`
 			return fetch(url, {
 				method: 'get'
 			}).then(response => response.json())

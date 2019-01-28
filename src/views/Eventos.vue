@@ -104,7 +104,7 @@ export default {
       var vm = this;
 
       if(this.validateForm()) {
-        fetch('http://localhost:1337/eventos', {
+        fetch(`${this.$apiUrl}/eventos`, {
           method: 'post',
           body: JSON.stringify({
             nome: vm.eventoForm.nome,
@@ -132,7 +132,7 @@ export default {
       })
     },
     getAll() {
-			return fetch('http://localhost:1337/eventos/', {
+			return fetch(`${this.$apiUrl}/eventos/`, {
 				method: 'get'
 			}).then(response => response.json())
     },
