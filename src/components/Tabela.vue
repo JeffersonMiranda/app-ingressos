@@ -2,25 +2,8 @@
 	<div>
 		<h2> {{ titulo }} </h2>
 
-		<table class="table">
-			<thead>
-				<tr>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<th></th>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</tbody>
-		</table>
-
+		<table class="table"> <slot></slot> </table>
+		
 	</div>
 </template>
 

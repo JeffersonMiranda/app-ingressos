@@ -1,6 +1,22 @@
 <template>
   <div class="home">
-    <Tabela titulo="Lista de eventos"></Tabela>
+    <Tabela titulo="Lista de eventos">
+      <thead>
+			  <tr>
+					<th>ID</th>
+					<th>Descrição</th>
+					<th>Data</th>
+					<th>Abertura</th>
+          <th>Início</th>
+          <th>Classificação</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td></td>
+				</tr>
+			</tbody>
+    </Tabela>
   </div>
 </template>
 

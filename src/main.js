@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 Vue.config.productionTip = false
 
-new Vue({
+var appVue = new Vue({
   router,
   render: h => h(App)
 }).$mount('#app')
